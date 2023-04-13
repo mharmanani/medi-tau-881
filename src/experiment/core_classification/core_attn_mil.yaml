@@ -1,0 +1,43 @@
+# @package _global_
+
+defaults:
+  - override /driver: finetune
+  - override /datamodule@driver.config.datamodule: concatenated_cores
+  - override /model@driver.config.model: core_finetuner
+  - override /callbacks@driver.config.callbacks: core_finetune
+  # - override /datamodule/splits@driver.config.datamodule.splits: uva600 # for testing
+
+
+name: "AttnMIL-sl_all-centrs_bsz5_semi-sup"
+seed: 0
+split_seed: 0
+
+driver:    
+  config:
+
+    trainer: 
+      accumulate_grad_batches: 5
+      num_sanity_val_steps: 0
+    
+    datamodule:
+      loader_config: 
+        batch_size: 1
+      splits:
+        # undersample_benign_train: True
+        # undersample_benign_eval: True
+        test_as_val: True
+
+    model:
+      batch_size: ${eval_str:'${driver.config.datamodule.loader_config.batch_size} * ${driver.config.trainer.accumulate_grad_batches}'}
+      semi_sup: True
+      head_network:
+        model_name: "attention_MIL"
+      backbone:
+        _target_: src.modeling.registry.create_model
+        model_name: resnet10_feature_extractor
+
+    logger:
+      wandb:
+        tags: ["IPCAI", "core_AttMIL"]
+        entity: mahdigilany
+        project: IPCAI

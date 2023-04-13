@@ -1,0 +1,48 @@
+# @package _global_
+
+defaults:
+  - /datamodule@driver.datamodule: ssl_tau
+  - /datamodule@driver.sl_datamodule: sl_tau
+
+
+name: simclr_ensembe_mlp
+
+driver: 
+  _target_: src.driver.simclr_ens_driver.SimCLREnsDriver
+  t: 1
+  eps: 0.000001
+  train_epochs: -1
+  finetune_epochs: -1
+  learning_rate: 1e-4
+  device: 'cuda'
+  out_dim: 256
+  hidden_dim: 512
+  use_final_bn: False
+  use_dropout: False
+  batch_size: 128
+  backbone_name: 'resnet18'
+  use_ensembles: True
+  ensemble_models: 3
+
+  #datamodule:
+  #  splits:
+  #    cohort_specifier: ['UVA', 'CRCEO']
+  #    merge_val_centers: True
+  #    merge_test_centers: True
+  #  
+  #  loader_config: 
+  #    balance_classes_train: true
+  #  
+  #  minimum_involvement: 0.4
+#
+  #  patch_selection_options: 
+  #    patch_size_mm: [5, 5]
+  #    patch_strides_mm: [1, 1]
+  #    needle_region_overlap_threshold: 0.6
+  #    prostate_region_overlap_threshold: 0.9
+  #    discard_inside_needle: 1
+  #    discard_inside_prostate: 1
+  #    discard_outside_prostate: 0
+  #    selection_seed: 0
+
+split_seed: 0

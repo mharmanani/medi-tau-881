@@ -1,0 +1,40 @@
+# @package _global_
+
+defaults:
+  - override /driver: selfsemi_finetune
+
+
+name: "onenet-ssl-prst-dividemix_UVA600_ssl-pretrain_all-centrs_lin-eval_balanced"
+seed: 0
+split_seed: 0
+
+driver:
+  config:
+    trainer:
+      num_sanity_val_steps: 0
+
+    datamodule:
+      patch_view_config: 
+        needle_region_only: False
+        prostate_region_only: True
+      splits:
+        cohort_specifier: [UVA600]
+        test_as_val: True
+      loader_config:
+        batch_size: 32
+
+    model:
+      semi_sup: False
+      temperature: 0.1
+      beta_alpha: 0.75
+      GMM_cycle: 2
+      # backbone1:
+      #   model_name: finetune_linear_all_centers
+      #   seed: ${seed}
+      #   split_seed: ${split_seed}
+
+    logger:
+      wandb:
+        tags: ["MICCAI2023", "self_semi_oneGMM"]
+        entity: mahdigilany
+        project: MICCAI2023

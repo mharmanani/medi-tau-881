@@ -1,0 +1,13 @@
+defaults: 
+ - splits_config_base
+ - _self_ 
+
+cohort_specifier: ["CRCEO", "UVA"]
+undersample_benign_train: True
+undersample_benign_eval: True
+train_val_split_seed: ${oc.env:SPLIT_SEED,0}
+train_val_ratio: .25
+
+merge_val_centers: True
+merge_test_centers: True
+

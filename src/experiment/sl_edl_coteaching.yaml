@@ -1,0 +1,30 @@
+# @package _global_
+
+defaults:
+  - override /driver: train
+  - override /model@driver.config.model: edl_coteaching
+
+
+name: "sl_edl_coteaching_all-centrs"
+seed: 0
+split_seed: 0
+
+driver:
+  config:
+    trainer:
+      num_sanity_val_steps: 0  
+
+    datamodule:
+      splits:
+        test_as_val: True
+
+    # model:
+    #   final_remember_rate: 0.4
+    #   final_remember_rate_epoch_frac: 0.01
+
+
+    logger:
+      wandb:
+        tags: ["IPCAI", "edl+coteaching"]
+        entity: mahdigilany
+        project: IPCAI
